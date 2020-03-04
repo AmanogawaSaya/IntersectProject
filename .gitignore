@@ -22,14 +22,21 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
-#myignore
-.idea
-*.iml
-out
-check
+# vs2019
 .vs
 *.sln
 *.vcxproj
 *.user
 *.filters
 Debug
+*.obj
+*.pch
+*.idb
+*.pdb
+*.tlog
+
+#myignore
+.idea
+*.iml
+out
+check

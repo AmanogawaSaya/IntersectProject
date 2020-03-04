@@ -27,7 +27,7 @@ void input(int num) {
 
 struct dot calculate(double k1, double b1, double k2, double b2) {
 	struct dot result;
-	result.x = (b2 - b1) / (k2 - k1);
+	result.x = (b2 - b1) / (k1 - k2);
 	result.y = k1 * result.x + b1;
 	return result;
 }

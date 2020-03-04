@@ -7,6 +7,15 @@ struct dot {
 	bool operator<(const dot& rhs) const {
 		return x + y < rhs.x + rhs.y;
 	}
+
+	dot() {
+		x = 0.0;
+		y = 0.0;
+	}
+	dot(double x, double y) {
+		dot::x = x;
+		dot::y = y;
+	}
 };
 
 /* line is y = kx + b -> Ax + By + C = 0*/
