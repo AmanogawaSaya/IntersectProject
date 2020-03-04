@@ -32,3 +32,4 @@ check
 *.vcxproj
 *.user
 *.filters
+Debug
