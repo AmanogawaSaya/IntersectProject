@@ -25,10 +25,13 @@ void input(int num) {
 	}
 }
 
-struct dot calculate(double k1, double b1, double k2, double b2) {
-	struct dot result;
-	result.x = (b2 - b1) / (k1 - k2);
-	result.y = k1 * result.x + b1;
+struct dot* calculate(double k1, double b1, double k2, double b2) {
+	if (k1 == k2) {
+		return NULL;
+	}
+	struct dot* result = new struct dot();
+	result->x = (b2 - b1) / (k1 - k2);
+	result->y = k1 * result->x + b1;
 	return result;
 }
 
@@ -38,7 +41,10 @@ int main() {
 	input(num);
 	for (unsigned int i = 0; i < lineArray.size(); i++) {
 		for (unsigned int j = i + 1; j < lineArray.size(); j++) {
-			crossDot.insert(calculate(lineArray[i].getK(), lineArray[i].getB(), lineArray[j].getK(), lineArray[j].getB()));
+			struct dot* temp = calculate(lineArray[i].getK(), lineArray[i].getB(), lineArray[j].getK(), lineArray[j].getB());
+			if (temp != NULL) {
+				crossDot.insert(*temp);
+			}
 		}
 	}
 	cout << crossDot.size() << endl;

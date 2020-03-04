@@ -12,9 +12,9 @@ namespace test
 		
 		TEST_METHOD(TestMethod1)
 		{
-			struct dot testDot = calculate(0.0, 1.0, 2.0, 3.0);
-			Assert::AreEqual(testDot.x, -1.0);
-			Assert::AreEqual(testDot.y, 1.0);
+			struct dot* testDot = calculate(0.0, 1.0, 2.0, 3.0);
+			Assert::AreEqual(testDot->x, -1.0);
+			Assert::AreEqual(testDot->y, 1.0);
 		}
 	};
 }

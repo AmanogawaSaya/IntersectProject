@@ -4,8 +4,8 @@ struct dot {
 	double x;
 	double y;
 
-	bool operator<(const dot& rhs) const {
-		return x + y < rhs.x + rhs.y;
+	bool operator < (const struct dot & b) const {
+		return x < b.x;
 	}
 
 	dot() {
@@ -55,4 +55,4 @@ public:
 };
 
 void input(int num);
-struct dot calculate(double k1, double b1, double k2, double b2);
+struct dot* calculate(double k1, double b1, double k2, double b2);
