@@ -1,17 +1,26 @@
 #pragma once
+#include<vector>
+using namespace std;
 
 struct dot {
 	double x;
 	double y;
 
 	bool operator < (const struct dot & b) const {
-		return x < b.x;
+		if (x == b.x && y == b.y) {
+			return false;
+		}
+		else if (x < b.x || x == b.x && y < b.y) {
+			return true;
+		}
+		return false;
 	}
 
 	dot() {
 		x = 0.0;
 		y = 0.0;
 	}
+
 	dot(double x, double y) {
 		dot::x = x;
 		dot::y = y;
@@ -30,6 +39,10 @@ public:
 		line::b = y1 - line::k * x1;
 	}
 
+	line(double k, double b) {
+		line::k = k;
+		line::b = b;
+	}
 	double getK() {
 		return k;
 	}
@@ -52,7 +65,22 @@ public:
 		circle::r = r;
 	}
 
+	int getX() {
+		return x;
+	}
+
+	int getY() {
+		return y;
+	}
+
+	int getZ() {
+		return r;
+	}
 };
 
 void input(int num);
 struct dot* calculate(double k1, double b1, double k2, double b2);
+vector<double> level2Equation(vector<double> simple);
+vector<double> getEquationForLC(line x, circle y);
+void getLCcrossDot(line A, circle B);
+line* get2CircleLine(circle a, circle b);
