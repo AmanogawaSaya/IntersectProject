@@ -29,57 +29,36 @@ struct dot {
 
 /* line is y = kx + b -> Ax + By + C = 0*/
 class line {
-private:
+public:
 	double k;
 	double b;
 
-public:
 	line(double x1, double y1, double x2, double y2) {
 		line::k = (y2 - y1) / (x2 - x1);
 		line::b = y1 - line::k * x1;
 	}
 
-	line(double k, double b) {
+	line(double k, double d) {
 		line::k = k;
-		line::b = b;
-	}
-	double getK() {
-		return k;
-	}
-
-	double getB() {
-		return b;
+		line::b = d;
 	}
 };
 
 class circle {
-private:
-	int x;
-	int y;
-	int r;
-
 public:
+	double x;
+	double y;
+	double r;
+
 	circle(int x, int y, int r) {
 		circle::x = x;
 		circle::y = y;
 		circle::r = r;
 	}
-
-	int getX() {
-		return x;
-	}
-
-	int getY() {
-		return y;
-	}
-
-	int getZ() {
-		return r;
-	}
 };
 
 void input(int num);
-struct dot* calculate(double k1, double b1, double k2, double b2);
+struct dot* calculate(line A, line B);
 vector<double> level2Equation(vector<double> simple);
 vector<double> getEquationForLC(line x, circle y);
 void getLCcrossDot(line A, circle B);

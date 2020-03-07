@@ -12,7 +12,9 @@ namespace test
 		
 		TEST_METHOD(calculateTest)
 		{
-			struct dot* testDot = calculate(0.0, 1.0, 2.0, 3.0);
+			line A(0.0, 1.0);
+			line B(2.0, 3.0);
+			struct dot* testDot = calculate(A, B);
 			Assert::AreEqual(testDot->x, -1.0);
 			Assert::AreEqual(testDot->y, 1.0);
 		}
@@ -38,8 +40,8 @@ namespace test
 			circle B(1, 1, 1);
 			line* test = get2CircleLine(A, B);
 			Assert::IsNotNull(test);
-			Assert::AreEqual(test->getK(), -1.0);
-			Assert::AreEqual(test->getB(), 1.0);
+			Assert::AreEqual(test->k, -1.0);
+			Assert::AreEqual(test->b, 1.0);
 		}
 	};
 }

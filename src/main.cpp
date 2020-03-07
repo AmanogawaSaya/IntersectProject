@@ -28,13 +28,13 @@ void input(int num) {
 	}
 }
 
-struct dot* calculate(double k1, double b1, double k2, double b2) {
-	if (k1 == k2) {
+struct dot* calculate(line A, line B) {
+	if (A.k == B.k) {
 		return NULL;
 	}
 	struct dot* result = new struct dot();
-	result->x = (b2 - b1) / (k1 - k2);
-	result->y = k1 * result->x + b1;
+	result->x = (B.b - A.b) / (A.k - B.k);
+	result->y = A.k * result->x + A.b;
 	return result;
 }
 
@@ -55,11 +55,11 @@ vector<double> level2Equation(vector<double> simple) {
 }
 
 vector<double> getEquationForLC(line x, circle y) {
-	double a = y.getX();
-	double b = y.getY();
-	double r = y.getZ();
-	double k = x.getK();
-	double d = x.getB();
+	double a = y.x;
+	double b = y.y;
+	double r = y.r;
+	double k = x.k;
+	double d = x.b;
 	vector<double> simple;
 	simple.push_back(pow(k, 2) + 1);
 	simple.push_back(2 * (d * k - b * k - a));
@@ -71,29 +71,29 @@ void getLCcrossDot(line A, circle B) {
 	vector<double> simple = getEquationForLC(A, B);
 	vector<double> solution = level2Equation(simple);
 	if (solution.size() == 1) {
-		crossDot.insert(struct dot(solution[0], A.getK() * solution[0] + A.getB()));
+		crossDot.insert(struct dot(solution[0], A.k * solution[0] + A.b));
 	}
 	else if (solution.size() == 2) {
-		crossDot.insert(struct dot(solution[0], A.getK() * solution[0] + A.getB()));
-		crossDot.insert(struct dot(solution[1], A.getK() * solution[1] + A.getB()));
+		crossDot.insert(struct dot(solution[0], A.k * solution[0] + A.b));
+		crossDot.insert(struct dot(solution[1], A.k * solution[1] + A.b));
 	}
 }
 
 line* get2CircleLine(circle a, circle b) {
-	double distance = pow(a.getX() - b.getX(), 2) + pow(a.getY() - b.getY(), 2);
+	double distance = pow(a.x - b.x, 2) + pow(a.y - b.y, 2);
 	/* ÏàÀë */
-	if (distance > pow(a.getZ() + b.getZ(), 2)) {
+	if (distance > pow(a.r + b.r, 2)) {
 		return NULL;
 	}
 	/* ÄÚº¬ */
-	else if (distance < pow(a.getZ() - b.getZ(), 2)) {
+	else if (distance < pow(a.r - b.r, 2)) {
 		return NULL;
 	}
 	/*k = -(a2-a1) / (b2 - b1)*/
-	double k = (a.getX() - b.getX()) / (b.getY() - a.getY());
+	double k = (a.x - b.x) / (b.y - a.y);
 	/*b = (c1^2 - c2^2 - b1^2 + b2^2 - a1^2 + a2^2) / 2(b2-b1)*/
-	double d = (pow(a.getZ(), 2) - pow(b.getZ(), 2)
-		- pow(a.getY(), 2) + pow(b.getY(), 2) - pow(a.getX(), 2) + pow(b.getX(), 2)) / 2 * (b.getY() - a.getY());
+	double d = (pow(a.r, 2) - pow(b.r, 2)
+		- pow(a.y, 2) + pow(b.y, 2) - pow(a.x, 2) + pow(b.x, 2)) / 2 * (b.y - a.y);
 	return new line(k, d);
 }
 
@@ -111,7 +111,7 @@ int main(int argc, char* argv[]) {
 	input(num);
 	for (unsigned int i = 0; i < lineArray.size(); i++) {
 		for (unsigned int j = i + 1; j < lineArray.size(); j++) {
-			struct dot* temp = calculate(lineArray[i].getK(), lineArray[i].getB(), lineArray[j].getK(), lineArray[j].getB());
+			struct dot* temp = calculate(lineArray[i], lineArray[j]);
 			if (temp != NULL) {
 				crossDot.insert(*temp);
 			}
