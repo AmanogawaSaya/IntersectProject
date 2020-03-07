@@ -40,3 +40,6 @@ Debug
 *.iml
 out
 check
+*.txt
+*.py
+*.bat

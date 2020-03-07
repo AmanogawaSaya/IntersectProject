@@ -1,5 +1,6 @@
 #include"../include/main.h"
 #include<iostream>
+#include<fstream>
 #include<vector>
 #include<set>
 using namespace std;
@@ -7,19 +8,21 @@ using namespace std;
 vector<line>lineArray;
 vector<circle>circleArray;
 set<struct dot> crossDot;
+ifstream inputFile;
+ofstream outputFile;
 
 void input(int num) {
 	for (int i = 0; i < num; i++) {
 		char type;
-		cin >> type;
+		inputFile >> type;
 		if (type == 'L') {
 			int x1, y1, x2, y2;
-			cin >> x1 >> y1 >> x2 >> y2;
+			inputFile >> x1 >> y1 >> x2 >> y2;
 			lineArray.push_back(line(x1, y1, x2, y2));
 		}
 		else if (type == 'C') {
 			int x, y, r;
-			cin >> x >> y >> r;
+			inputFile >> x >> y >> r;
 			circleArray.push_back(circle(x, y, r));
 		}
 	}
@@ -75,6 +78,7 @@ void getLCcrossDot(line A, circle B) {
 		crossDot.insert(struct dot(solution[1], A.getK() * solution[1] + A.getB()));
 	}
 }
+
 line* get2CircleLine(circle a, circle b) {
 	double distance = pow(a.getX() - b.getX(), 2) + pow(a.getY() - b.getY(), 2);
 	/* œ‡¿Î */
@@ -93,9 +97,17 @@ line* get2CircleLine(circle a, circle b) {
 	return new line(k, d);
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+	for (int i = 0; i < argc; i++) {
+		if (strcmp(argv[i], "-i") == 0) {
+			inputFile = ifstream(argv[i + 1]);
+		}
+		else if (strcmp(argv[i], "-o") == 0) {
+			outputFile = ofstream(argv[i + 1]);
+		}
+	}
 	int num = 0;
-	cin >> num;
+	inputFile >> num;
 	input(num);
 	for (unsigned int i = 0; i < lineArray.size(); i++) {
 		for (unsigned int j = i + 1; j < lineArray.size(); j++) {
@@ -118,5 +130,6 @@ int main() {
 		}
 	}
 	cout << crossDot.size() << endl;
+	outputFile << crossDot.size() << endl;
 	return 0;
 }
