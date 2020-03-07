@@ -18,12 +18,31 @@ void input(int num) {
 		if (type == 'L') {
 			int x1, y1, x2, y2;
 			inputFile >> x1 >> y1 >> x2 >> y2;
-			lineArray.push_back(line(x1, y1, x2, y2));
+			line newline = line(x1, y1, x2, y2);
+			for (line i : lineArray) {
+				struct dot* temp = calculate(i, newline);
+				if (temp != NULL) {
+					crossDot.insert(*temp);
+				}
+			}
+			for (circle i : circleArray) {
+				getLCcrossDot(newline, i);
+			}
+			lineArray.push_back(newline);
 		}
 		else if (type == 'C') {
 			int x, y, r;
 			inputFile >> x >> y >> r;
-			circleArray.push_back(circle(x, y, r));
+			circle newcircle = circle(x, y, r);
+			for (line i : lineArray) {
+				getLCcrossDot(i, newcircle);
+			}
+			for (circle i : circleArray) {
+				line* temp = get2CircleLine(i, newcircle);
+				if (temp != NULL)
+					getLCcrossDot(*temp, newcircle);
+			}
+			circleArray.push_back(newcircle);
 		}
 	}
 }
@@ -109,26 +128,6 @@ int main(int argc, char* argv[]) {
 	int num = 0;
 	inputFile >> num;
 	input(num);
-	for (unsigned int i = 0; i < lineArray.size(); i++) {
-		for (unsigned int j = i + 1; j < lineArray.size(); j++) {
-			struct dot* temp = calculate(lineArray[i], lineArray[j]);
-			if (temp != NULL) {
-				crossDot.insert(*temp);
-			}
-		}
-	}
-	for (unsigned int i = 0; i < lineArray.size(); i++) {
-		for (unsigned int j = 0; j < circleArray.size(); j++) {
-			getLCcrossDot(lineArray[i], circleArray[j]);
-		}
-	}
-	for (unsigned int i = 0; i < circleArray.size(); i++) {
-		for (unsigned int j = i + 1; j < circleArray.size(); j++) {
-			line* temp = get2CircleLine(circleArray[i], circleArray[j]);
-			if(temp != NULL)
-				getLCcrossDot(*temp, circleArray[i]);
-		}
-	}
 	cout << crossDot.size() << endl;
 	outputFile << crossDot.size() << endl;
 	return 0;
