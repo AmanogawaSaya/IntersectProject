@@ -58,7 +58,7 @@ public:
 };
 
 void input(int num);
-struct dot* calculate(line A, line B);
+struct dot calculate(line A, line B);
 vector<double> level2Equation(vector<double> simple);
 vector<double> getEquationForLC(line x, circle y);
 void getLCcrossDot(line A, circle B);

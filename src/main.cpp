@@ -20,10 +20,7 @@ void input(int num) {
 			inputFile >> x1 >> y1 >> x2 >> y2;
 			line newline = line(x1, y1, x2, y2);
 			for (line i : lineArray) {
-				struct dot* temp = calculate(i, newline);
-				if (temp != NULL) {
-					crossDot.insert(*temp);
-				}
+				calculate(i, newline);
 			}
 			for (circle i : circleArray) {
 				getLCcrossDot(newline, i);
@@ -47,13 +44,14 @@ void input(int num) {
 	}
 }
 
-struct dot* calculate(line A, line B) {
+struct dot calculate(line A, line B) {
+	struct dot result;
 	if (A.k == B.k) {
-		return NULL;
+		return result;
 	}
-	struct dot* result = new struct dot();
-	result->x = (B.b - A.b) / (A.k - B.k);
-	result->y = A.k * result->x + A.b;
+	result.x = (B.b - A.b) / (A.k - B.k);
+	result.y = A.k * result.x + A.b;
+	crossDot.insert(result);
 	return result;
 }
 
@@ -62,7 +60,7 @@ vector<double> level2Equation(vector<double> simple) {
 	double b = simple[1];
 	double c = simple[2];
 	vector<double> solution;
-	double delta = pow(b, 2) - 4 * a * c;
+	double delta = b * b - 4 * a * c;
 	if (delta == 0) {
 		solution.push_back(-b / 2 * a);
 	}

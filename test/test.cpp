@@ -14,9 +14,9 @@ namespace test
 		{
 			line A(0.0, 1.0);
 			line B(2.0, 3.0);
-			struct dot* testDot = calculate(A, B);
-			Assert::AreEqual(testDot->x, -1.0);
-			Assert::AreEqual(testDot->y, 1.0);
+			struct dot testDot = calculate(A, B);
+			Assert::AreEqual(testDot.x, -1.0);
+			Assert::AreEqual(testDot.y, 1.0);
 		}
 		TEST_METHOD(level2EquationTest)
 		{
