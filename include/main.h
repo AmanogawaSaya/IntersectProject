@@ -10,6 +10,23 @@ struct dot {
 		return x == b.x && y == b.y;
 	}
 
+	bool operator < (const struct dot& b) const {
+		if (x < b.x) {
+			return true;
+		}
+		else if(x == b.x){
+			if (y < b.y) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
 	dot() {
 		x = 0.0;
 		y = 0.0;

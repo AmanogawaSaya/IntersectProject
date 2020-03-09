@@ -23,7 +23,12 @@ void input(int num) {
 				calculate(i, newline);
 			}
 			for (circle i : circleArray) {
-				getLCcrossDot(newline, i);
+				if (newline.b == 0) {
+					yParelLine(newline, i);
+				}
+				else {
+					getLCcrossDot(newline, i);
+				}
 			}
 			lineArray.push_back(newline);
 		}
@@ -41,13 +46,14 @@ void input(int num) {
 			}
 			for (circle i : circleArray) {
 				line* temp = get2CircleLine(i, newcircle);
-				if (temp != NULL)
+				if (temp != NULL) {
 					if (temp->b == 0) {
 						yParelLine(*temp, newcircle);
 					}
 					else {
 						getLCcrossDot(*temp, newcircle);
 					}
+				}
 			}
 			circleArray.push_back(newcircle);
 		}
@@ -85,14 +91,13 @@ vector<double> getEquationForLC(line x, circle y) {
 	double a = y.x;
 	double b = y.y;
 	double r = y.r;
-	double k;
-	double d;
+	double m = x.a;
+	double n = x.b;
+	double p = x.c;
 	vector<double> simple(3);
-	k = -x.a / x.b;
-	d = -x.c / x.b;
-	simple[0] = k * k + 1;
-	simple[1] = 2 * (d * k - b * k - a);
-	simple[2] = (d - b) * (d - b) - r * r + a * a;
+	simple[0] = m * m + n * n;
+	simple[1] = 2 * (m * p - a * n * n + b * m * n);
+	simple[2] = (a * a + b * b - r * r) * n * n + p * p + 2 * b * p * n;
 	return simple;
 }
 
