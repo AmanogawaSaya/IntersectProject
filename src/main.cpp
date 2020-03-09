@@ -2,12 +2,12 @@
 #include<iostream>
 #include<fstream>
 #include<vector>
-#include<set>
+#include<unordered_set>
 using namespace std;
 
 vector<line>lineArray;
 vector<circle>circleArray;
-set<struct dot> crossDot;
+unordered_set<dot, myHashFuc> crossDot;
 ifstream inputFile;
 ofstream outputFile;
 
@@ -78,9 +78,9 @@ vector<double> getEquationForLC(line x, circle y) {
 	double k = x.k;
 	double d = x.b;
 	vector<double> simple;
-	simple.push_back(pow(k, 2) + 1);
+	simple.push_back(k * k + 1);
 	simple.push_back(2 * (d * k - b * k - a));
-	simple.push_back(pow((d - b), 2) - pow(r, 2));
+	simple.push_back((d - b) * (d - b) - r * r + a * a);
 	return simple;
 }
 
