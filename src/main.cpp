@@ -32,12 +32,22 @@ void input(int num) {
 			inputFile >> x >> y >> r;
 			circle newcircle = circle(x, y, r);
 			for (line i : lineArray) {
-				getLCcrossDot(i, newcircle);
+				if (i.b == 0) {
+					yParelLine(i, newcircle);
+				}
+				else {
+					getLCcrossDot(i, newcircle);
+				}
 			}
 			for (circle i : circleArray) {
 				line* temp = get2CircleLine(i, newcircle);
 				if (temp != NULL)
-					getLCcrossDot(*temp, newcircle);
+					if (temp->b == 0) {
+						yParelLine(*temp, newcircle);
+					}
+					else {
+						getLCcrossDot(*temp, newcircle);
+					}
 			}
 			circleArray.push_back(newcircle);
 		}
@@ -46,11 +56,11 @@ void input(int num) {
 
 struct dot calculate(line A, line B) {
 	struct dot result;
-	if (A.k == B.k) {
+	if (A.a * B.b == A.b * B.a) {
 		return result;
 	}
-	result.x = (B.b - A.b) / (A.k - B.k);
-	result.y = A.k * result.x + A.b;
+	result.x = (A.b * B.c - A.c * B.b) / (A.a * B.b - B.a * A.b);
+	result.y = (B.a * A.c - B.c * A.a) / (A.a * B.b - A.b * B.a);
 	crossDot.insert(result);
 	return result;
 }
@@ -75,24 +85,28 @@ vector<double> getEquationForLC(line x, circle y) {
 	double a = y.x;
 	double b = y.y;
 	double r = y.r;
-	double k = x.k;
-	double d = x.b;
-	vector<double> simple;
-	simple.push_back(k * k + 1);
-	simple.push_back(2 * (d * k - b * k - a));
-	simple.push_back((d - b) * (d - b) - r * r + a * a);
+	double k;
+	double d;
+	vector<double> simple(3);
+	k = -x.a / x.b;
+	d = -x.c / x.b;
+	simple[0] = k * k + 1;
+	simple[1] = 2 * (d * k - b * k - a);
+	simple[2] = (d - b) * (d - b) - r * r + a * a;
 	return simple;
 }
 
 void getLCcrossDot(line A, circle B) {
 	vector<double> simple = getEquationForLC(A, B);
 	vector<double> solution = level2Equation(simple);
+	double k = -A.a / A.b;
+	double b = -A.c / A.b;
 	if (solution.size() == 1) {
-		crossDot.insert(struct dot(solution[0], A.k * solution[0] + A.b));
+		crossDot.insert(struct dot(solution[0], k * solution[0] + b));
 	}
 	else if (solution.size() == 2) {
-		crossDot.insert(struct dot(solution[0], A.k * solution[0] + A.b));
-		crossDot.insert(struct dot(solution[1], A.k * solution[1] + A.b));
+		crossDot.insert(struct dot(solution[0], k * solution[0] + b));
+		crossDot.insert(struct dot(solution[1], k * solution[1] + b));
 	}
 }
 
@@ -106,12 +120,26 @@ line* get2CircleLine(circle a, circle b) {
 	else if (distance < pow(a.r - b.r, 2)) {
 		return NULL;
 	}
-	/*k = -(a2-a1) / (b2 - b1)*/
-	double k = (a.x - b.x) / (b.y - a.y);
-	/*b = (c1^2 - c2^2 - b1^2 + b2^2 - a1^2 + a2^2) / 2(b2-b1)*/
-	double d = (pow(a.r, 2) - pow(b.r, 2)
-		- pow(a.y, 2) + pow(b.y, 2) - pow(a.x, 2) + pow(b.x, 2)) / 2 * (b.y - a.y);
-	return new line(k, d);
+	double _a = 2 * (b.x - a.x);
+	double _b = 2 * (b.y - a.y);
+	double _c = a.x * a.x - b.x * b.x + a.y * a.y - b.y * b.y - a.r * a.r + b.r * b.r;
+	return new line(_a, _b, _c);
+}
+
+void yParelLine(line A, circle B) {
+	double x = -A.c / A.a;
+	vector<double> simple(3);
+	simple[0] = 1;
+	simple[1] = -2 * B.y;
+	simple[2] = B.y * B.y + x * x - 2 * B.x * x + B.x * B.x - B.r * B.r;
+	vector<double> solution = level2Equation(simple);
+	if (solution.size() == 1) {
+		crossDot.insert(struct dot(x, solution[0]));
+	}
+	else if (solution.size() == 2) {
+		crossDot.insert(struct dot(x, solution[0]));
+		crossDot.insert(struct dot(x, solution[1]));
+	}
 }
 
 int main(int argc, char* argv[]) {

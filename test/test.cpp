@@ -12,11 +12,11 @@ namespace test
 		
 		TEST_METHOD(calculateTest)
 		{
-			line A(0.0, 1.0);
-			line B(2.0, 3.0);
+			line A(2.0, -1.0, 2.0);
+			line B(4.0, -1.0, 1.0);
 			struct dot testDot = calculate(A, B);
-			Assert::AreEqual(testDot.x, -1.0);
-			Assert::AreEqual(testDot.y, 1.0);
+			Assert::AreEqual(testDot.x, 0.5);
+			Assert::AreEqual(testDot.y, 3.0);
 		}
 		TEST_METHOD(level2EquationTest)
 		{
@@ -28,7 +28,7 @@ namespace test
 		TEST_METHOD(getEquationForLCTest)
 		{
 			circle TestC(0, 0, 1);
-			line TestL(0, 0);
+			line TestL(0, 1, 0);
 			vector<double> test = getEquationForLC(TestL, TestC);
 			Assert::AreEqual(test[0], 1.0);
 			Assert::AreEqual(test[1], 0.0);
@@ -39,9 +39,11 @@ namespace test
 			circle A(0, 0, 1);
 			circle B(1, 1, 1);
 			line* test = get2CircleLine(A, B);
+			double k = -test->a / test->b;
+			double b = -test->c / test->b;
 			Assert::IsNotNull(test);
-			Assert::AreEqual(test->k, -1.0);
-			Assert::AreEqual(test->b, 1.0);
+			Assert::AreEqual(k, -1.0);
+			Assert::AreEqual(b, 1.0);
 		}
 	};
 }

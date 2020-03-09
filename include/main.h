@@ -32,22 +32,29 @@ struct myHashFuc
 /* line is y = kx + b -> Ax + By + C = 0*/
 class line {
 public:
-	double k;
+	double a;
 	double b;
+	double c;
 
 	line() {
-		k = 0.0;
+		a = 0.0;
 		b = 0.0;
+		c = 0.0;
 	}
 
 	line(double x1, double y1, double x2, double y2) {
-		line::k = (y2 - y1) / (x2 - x1);
-		line::b = y1 - line::k * x1;
+		line::a = y2 - y1;
+		line::b = x1 - x2;
+		line::c = x2 * y1 - x1 * y2;
 	}
 
-	line(double k, double d) {
-		line::k = k;
-		line::b = d;
+	line(double a, double b, double c) {
+		line::a = a;
+		line::b = b;
+		line::c = c;
+	}
+	double distance(struct dot X) {
+		return fabs((a * X.x + b * X.y + c) / sqrt(a * a + b * b));
 	}
 };
 
@@ -76,3 +83,4 @@ vector<double> level2Equation(vector<double> simple);
 vector<double> getEquationForLC(line x, circle y);
 void getLCcrossDot(line A, circle B);
 line* get2CircleLine(circle a, circle b);
+void yParelLine(line A, circle B);
